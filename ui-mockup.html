@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>《一盅兩件》· UI 視覺稿</title>
+<style>
+  :root{
+    --paper:#F7F0E3;
+    --paper-2:#EFE3CF;
+    --card:#FFFCF5;
+    --ink:#2B2622;
+    --muted:#6E6357;
+    --green:#1F4D3A;
+    --green-deep:#16382B;
+    --green-soft:#E4EDE6;
+    --red:#A6402F;
+    --gold:#E0AE4F;
+    --line:#DCCBB0;
+    --ok:#256B4E;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    font-family:"Microsoft JhengHei","PingFang HK","Noto Sans TC","Segoe UI",sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, #FBF5E9 0%, rgba(251,245,233,0) 60%),
+      radial-gradient(900px 500px at 100% 0%, #F3E7D2 0%, rgba(243,231,210,0) 55%),
+      #EDE1CC;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- 文件外框 ---------- */
+  .spec{background:linear-gradient(135deg,#1B3F30,#245A44);color:#F7F0E3;padding:22px 0 20px;border-bottom:4px solid var(--gold);}
+  .spec-inner{max-width:1000px;margin:0 auto;padding:0 28px;display:flex;justify-content:space-between;gap:24px;align-items:flex-end;flex-wrap:wrap;}
+  .kicker{margin:0 0 6px;font-size:12px;letter-spacing:3px;color:#D9C8A6;text-transform:uppercase;}
+  .spec h1{margin:0;font-size:34px;letter-spacing:5px;font-weight:700;}
+  .spec .sub{margin:6px 0 0;font-size:14px;color:#DCE8DF;letter-spacing:.5px;}
+  .spec-note{font-size:12px;color:#C9B99C;border:1px solid rgba(224,174,79,.4);padding:8px 12px;border-radius:8px;max-width:290px;line-height:1.5;}
+
+  .tabs{position:sticky;top:0;z-index:20;display:flex;justify-content:center;gap:8px;padding:14px;background:rgba(237,225,204,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(220,203,176,.7);}
+  .tab{border:2px solid var(--line);background:#FFFCF5;color:#5C5247;font:inherit;font-size:15px;font-weight:700;padding:10px 22px;border-radius:999px;cursor:pointer;letter-spacing:1px;}
+  .tab.active{background:var(--green);color:#FFF8E8;border-color:var(--green);}
+
+  main{padding:34px 20px 10px;}
+  .screen{display:none;}
+  .screen.active{display:block;}
+  .app{
+    max-width:1000px;margin:0 auto;background:var(--paper);
+    border:1px solid #E4D6BE;border-radius:30px;
+    box-shadow:0 30px 70px rgba(43,38,34,.16);
+    padding:28px 38px 34px;min-height:700px;position:relative;overflow:hidden;
+  }
+
+  /* ---------- 首頁 ---------- */
+  .app-top{display:flex;justify-content:space-between;align-items:center;}
+  .mini-brand{font-size:17px;font-weight:700;letter-spacing:4px;color:var(--green);}
+  .top-actions{display:flex;gap:10px;}
+  .round{width:54px;height:54px;border-radius:50%;border:2px solid var(--line);background:#FFFCF5;font-size:21px;cursor:pointer;display:grid;place-items:center;}
+  .round:active{background:#F3E9D6;}
+
+  .hero{text-align:center;margin:16px 0 26px;}
+  .basket{
+    width:166px;height:166px;margin:0 auto 16px;border-radius:50%;
+    background:radial-gradient(circle at 50% 38%,#FFFDF7,#F0E3CB);
+    border:3px solid #E6D5B7;display:grid;place-items:center;font-size:76px;
+    box-shadow:inset 0 8px 20px rgba(180,150,100,.18),0 12px 26px rgba(120,95,60,.12);
+  }
+  .hero h2{margin:0;font-family:"DFKai-SB","BiauKai","Noto Serif TC",serif;font-size:58px;letter-spacing:8px;color:var(--green);font-weight:700;}
+  .tagline{margin:10px 0 0;font-size:21px;letter-spacing:7px;color:var(--muted);}
+
+  .themes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:640px;margin:0 auto;}
+  .theme{position:relative;border:2px solid var(--line);background:#FFFCF5;border-radius:20px;padding:16px 10px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;font:inherit;color:var(--ink);}
+  .theme .t-emoji{font-size:36px;line-height:1.2;}
+  .theme b{font-size:22px;letter-spacing:2px;}
+  .theme small{font-size:20px;color:var(--muted);}
+  .theme.active{border-color:var(--green);background:#EDF3EE;box-shadow:0 0 0 3px rgba(31,77,58,.10);}
+  .theme.active::after{content:"✓";position:absolute;top:-11px;right:-9px;width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:16px;font-weight:700;}
+
+  .primary{
+    display:block;width:100%;max-width:460px;margin:26px auto 0;height:88px;border:none;border-radius:20px;
+    background:var(--green);color:#FFF8E8;font:inherit;font-size:30px;font-weight:700;letter-spacing:6px;cursor:pointer;
+    box-shadow:0 7px 0 var(--green-deep),0 18px 30px rgba(31,77,58,.22);
+    transition:transform .12s,box-shadow .12s;
+  }
+  .primary:active{transform:translateY(5px);box-shadow:0 2px 0 var(--green-deep);}
+  .sub-actions{display:flex;justify-content:center;align-items:center;gap:16px;margin-top:18px;}
+  .ghost{border:none;background:none;font:inherit;font-size:20px;color:var(--green);text-decoration:underline;text-underline-offset:6px;cursor:pointer;padding:8px 6px;}
+  .dot{width:5px;height:5px;border-radius:50%;background:#C6B292;}
+  .home-foot{text-align:center;color:var(--muted);font-size:20px;margin:24px 0 0;letter-spacing:1px;}
+
+  /* ---------- 遊戲 ---------- */
+  .game-top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px;}
+  .chip{background:var(--green-soft);color:var(--green);font-weight:700;font-size:20px;padding:10px 18px;border-radius:999px;letter-spacing:1px;}
+  .ticket{display:flex;gap:10px;background:#FFFCF5;border:2px dashed #D8C3A2;padding:8px 14px;border-radius:14px;}
+  .stamp{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:16px;font-weight:700;border:2px dashed #D3BE9C;color:#C9B392;}
+  .stamp.on{background:var(--red);border:2px solid #8C3323;color:#FFF1DD;transform:rotate(-7deg);box-shadow:0 2px 0 rgba(0,0,0,.12);animation:stampIn .35s ease-out;}
+  @keyframes stampIn{0%{transform:rotate(-7deg) scale(1.5);opacity:.2}100%{transform:rotate(-7deg) scale(1);opacity:1}}
+
+  .board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;max-width:660px;margin:0 auto;}
+  .card{position:relative;aspect-ratio:3/4;border:none;background:none;padding:0;cursor:pointer;perspective:1100px;font:inherit;color:inherit;}
+  .card-inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .32s cubic-bezier(.2,.7,.3,1);}
+  .card.flipped .card-inner{transform:rotateY(180deg);}
+  .face{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;overflow:hidden;}
+  .face.back{background:repeating-linear-gradient(45deg,#245A44 0 12px,#20503C 12px 24px);border:3px solid #17362A;color:var(--gold);}
+  .face.back .kanji{font-family:"DFKai-SB","BiauKai",serif;font-size:46px;line-height:1;}
+  .face.front{background:#FFFCF5;border:3px solid var(--line);transform:rotateY(180deg);}
+  .face.front .icon{font-size:54px;line-height:1;}
+  .face.front .name{font-size:22px;font-weight:700;letter-spacing:2px;}
+  .card.matched{opacity:.72;}
+  .card.matched .face.front{border-color:var(--gold);box-shadow:inset 0 0 0 4px rgba(224,174,79,.35);}
+  .card.matched .face.front::after{content:"✓";position:absolute;top:8px;right:10px;width:28px;height:28px;border-radius:50%;background:var(--ok);color:#fff;font-size:15px;display:grid;place-items:center;}
+
+  .coach{display:flex;align-items:center;gap:14px;max-width:660px;margin:18px auto 0;background:#FFFCF5;border-left:6px solid var(--gold);border-radius:14px;padding:12px 16px;}
+  .coach-avatar{width:46px;height:46px;flex:0 0 46px;border-radius:50%;background:#F2E6D0;display:grid;place-items:center;font-size:23px;}
+  .coach p{margin:0;font-size:20px;line-height:1.5;color:#4A4239;}
+  .coach b{color:var(--green);}
+
+  .actionbar{display:flex;gap:14px;max-width:660px;margin:20px auto 0;}
+  .actionbar button{flex:1;height:84px;border-radius:18px;border:2px solid var(--line);background:#FFFCF5;font:inherit;font-size:21px;font-weight:700;color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .actionbar button:active{background:#F3E9D6;}
+
+  /* ---------- 完成 ---------- */
+  .result{text-align:center;}
+  .result .kicker{color:var(--muted);letter-spacing:4px;font-size:15px;margin:4px 0 4px;text-transform:none;}
+  .result-title{font-family:"DFKai-SB","BiauKai",serif;font-size:44px;letter-spacing:6px;color:var(--green);margin:6px 0 20px;}
+  .paper{max-width:520px;margin:0 auto;background:#FFFDF8;border:2px solid #E3D3B6;border-radius:16px;padding:18px 20px;box-shadow:0 12px 24px rgba(120,95,60,.10);position:relative;}
+  .paper::before{content:"";position:absolute;inset:8px;border:2px dashed #E8D9BE;border-radius:10px;pointer-events:none;}
+  .paper-head{font-size:20px;letter-spacing:3px;color:var(--muted);margin-bottom:12px;}
+  .paper-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .slot{border:2px dashed #DCC9A8;border-radius:12px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;}
+  .seal{width:46px;height:46px;border-radius:50%;background:var(--red);color:#FFF1DD;display:grid;place-items:center;font-size:19px;font-weight:700;transform:rotate(-8deg);box-shadow:0 2px 0 rgba(0,0,0,.12);}
+  .slot small{font-size:20px;color:#6E6357;}
+  .paper-foot{margin-top:10px;font-size:20px;color:var(--muted);letter-spacing:2px;}
+  .stars{font-size:42px;color:var(--gold);letter-spacing:10px;margin:16px 0 4px;text-shadow:0 2px 0 rgba(160,120,40,.18);}
+  .stats{display:flex;justify-content:center;gap:34px;margin:10px 0 18px;}
+  .stat{display:flex;flex-direction:column;gap:1px;}
+  .stat span{font-size:20px;color:var(--muted);letter-spacing:1px;}
+  .stat b{font-size:24px;}
+  .memory{max-width:640px;margin:0 auto 20px;text-align:left;border-left:5px solid var(--gold);padding:4px 0 4px 16px;font-size:22px;line-height:1.7;color:#4A4239;}
+  .result .primary{max-width:420px;height:80px;font-size:26px;}
+
+  /* ---------- 設計規格 ---------- */
+  .tokens{max-width:1000px;margin:50px auto 70px;padding:0 28px;}
+  .tokens h2{font-size:23px;letter-spacing:3px;color:var(--green);margin:0 0 6px;}
+  .tokens .lead{color:#6E6357;font-size:14px;margin:0 0 20px;}
+  .token-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;}
+  .token-card{background:#FFFCF5;border:1px solid #E3D5BC;border-radius:16px;padding:20px;}
+  .token-card h3{margin:0 0 14px;font-size:13px;letter-spacing:2px;color:var(--muted);}
+  .sw{display:flex;align-items:center;gap:12px;margin:0 0 9px;}
+  .sw i{width:36px;height:36px;border-radius:10px;border:1px solid rgba(0,0,0,.08);flex:0 0 36px;}
+  .sw div{font-size:13px;line-height:1.4;}
+  .sw b{display:block;font-size:14px;}
+  .sw span{color:#7A6E60;}
+  .type-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;border-bottom:1px dashed #E5D7BE;padding:7px 0;}
+  .type-row:last-child{border-bottom:none;}
+  .type-row small{color:#8A7C6B;font-size:11px;white-space:nowrap;}
+  .measure{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+  .measure .box{background:var(--green-soft);border:2px solid #BFD3C6;border-radius:10px;display:grid;place-items:center;font-size:12px;color:var(--green);}
+  .measure p{margin:0;font-size:13px;line-height:1.5;color:#5C5247;}
+  .rule-list{margin:0;padding-left:18px;font-size:13px;line-height:1.8;color:#5C5247;}
+
+  @media (max-width:760px){
+    .app{padding:22px 20px 26px;min-height:auto;border-radius:22px;}
+    .hero h2{font-size:42px;letter-spacing:8px;}
+    .basket{width:132px;height:132px;font-size:60px;}
+    .themes{grid-template-columns:repeat(3,1fr);gap:10px;}
+    .theme small{display:none;}
+    .board{grid-template-columns:repeat(2,1fr);max-width:420px;}
+    .game-top{flex-wrap:wrap;}
+    .actionbar button{font-size:18px;height:76px;}
+    .stats{gap:20px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important;}
+  }
+</style>
+</head>
+<body>
+
+<header class="spec">
+  <div class="spec-inner">
+    <div>
+      <p class="kicker">UI 視覺稿 · v1.0 · 2026.11.07</p>
+      <h1>《一盅兩件》</h1>
+      <p class="sub">LLM 驅動長者卡牌配對遊戲 · 茶樓主題 · 離線單頁應用</p>
+    </div>
+    <div class="spec-note">卡牌圖示暫以 emoji 代替；正式版改用 AI 生成、統一風格的手繪插畫。</div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="畫面切換">
+  <button class="tab active" data-screen="home">01 首頁</button>
+  <button class="tab" data-screen="game">02 遊戲中</button>
+  <button class="tab" data-screen="result">03 完成</button>
+</nav>
+
+<main>
+  <!-- ================= 首頁 ================= -->
+  <section class="screen active" id="home">
+    <div class="app">
+      <div class="app-top">
+        <div class="mini-brand">一盅兩件</div>
+        <div class="top-actions">
+          <button class="round" aria-label="聲音開關">🔊</button>
+          <button class="round" aria-label="設定">⚙️</button>
+        </div>
+      </div>
+
+      <div class="hero">
+        <div class="basket" aria-hidden="true">🥟</div>
+        <h2>一盅兩件</h2>
+        <p class="tagline">慢慢嘆 · 齊齊玩</p>
+      </div>
+
+      <div class="themes" role="group" aria-label="選擇主題">
+        <button class="theme active"><span class="t-emoji">🥟</span><b>茶樓</b><small>點心與茶</small></button>
+        <button class="theme"><span class="t-emoji">🥬</span><b>街市</b><small>餸菜與雜貨</small></button>
+        <button class="theme"><span class="t-emoji">🌳</span><b>公園</b><small>晨運與休憩</small></button>
+      </div>
+
+      <button class="primary">開始遊戲</button>
+
+      <div class="sub-actions">
+        <button class="ghost">點樣玩？</button>
+        <span class="dot" aria-hidden="true"></span>
+        <button class="ghost">繼續上次</button>
+      </div>
+
+      <p class="home-foot">第 1 關 · 3 對卡 · 約 2 分鐘</p>
+    </div>
+  </section>
+
+  <!-- ================= 遊戲 ================= -->
+  <section class="screen" id="game">
+    <div class="app">
+      <div class="game-top">
+        <div class="chip">第 2 關 · 同類配對</div>
+        <div class="ticket" aria-label="點心紙進度" id="ticket">
+          <span class="stamp on">蝦</span>
+          <span class="stamp">燒</span>
+          <span class="stamp">包</span>
+          <span class="stamp">撻</span>
+        </div>
+        <button class="round" aria-label="暫停">⏸</button>
+      </div>
+
+      <div class="board" id="board"></div>
+
+      <div class="coach">
+        <span class="coach-avatar" aria-hidden="true">🧑‍🍳</span>
+        <p><b>茶博士：</b>慢慢嚟，先睇下邊兩張有關係。</p>
+      </div>
+
+      <div class="actionbar">
+        <button>💡 提示</button>
+        <button>⏸ 暫停</button>
+        <button>🔊 聲音</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 完成 ================= -->
+  <section class="screen" id="result">
+    <div class="app result">
+      <p class="kicker">第 2 關完成</p>
+      <h2 class="result-title">點心紙滿咗！</h2>
+
+      <div class="paper">
+        <div class="paper-head">點心紙 · 第 2 關</div>
+        <div class="paper-grid">
+          <div class="slot"><span class="seal">蝦</span><small>蝦餃</small></div>
+          <div class="slot"><span class="seal">燒</span><small>燒賣</small></div>
+          <div class="slot"><span class="seal">包</span><small>叉燒包</small></div>
+          <div class="slot"><span class="seal">撻</span><small>蛋撻</small></div>
+        </div>
+        <div class="paper-foot">4 / 4 蓋印</div>
+      </div>
+
+      <div class="stars" aria-label="三星">★★★</div>
+
+      <div class="stats">
+        <div class="stat"><span>完成時間</span><b>3:24</b></div>
+        <div class="stat"><span>配對</span><b>4 / 4</b></div>
+        <div class="stat"><span>提示</span><b>1 次</b></div>
+      </div>
+
+      <blockquote class="memory">「以前點心車推到枱邊，蒸籠一開，成枱都係煙。」</blockquote>
+
+      <button class="primary">下一關</button>
+      <div class="sub-actions">
+        <button class="ghost">再玩一次</button>
+        <span class="dot" aria-hidden="true"></span>
+        <button class="ghost">返首頁</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= 設計規格 ================= -->
+<section class="tokens">
+  <h2>設計規格</h2>
+  <p class="lead">下列數值同時是無障礙驗收標準，開發時直接對照。</p>
+  <div class="token-grid">
+
+    <div class="token-card">
+      <h3>色彩 · 對比</h3>
+      <div class="sw"><i style="background:#F7F0E3"></i><div><b>檯布米白 #F7F0E3</b><span>背景 · 大面積</span></div></div>
+      <div class="sw"><i style="background:#2B2622"></i><div><b>墨 #2B2622</b><span>正文 · 約 13:1</span></div></div>
+      <div class="sw"><i style="background:#1F4D3A"></i><div><b>茶樓綠 #1F4D3A</b><span>主色 · 約 8.5:1</span></div></div>
+      <div class="sw"><i style="background:#A6402F"></i><div><b>棗紅 #A6402F</b><span>印章 · 大字用 · 約 5.4:1</span></div></div>
+      <div class="sw"><i style="background:#E0AE4F"></i><div><b>蛋黃 #E0AE4F</b><span>只作裝飾／邊框</span></div></div>
+      <div class="sw"><i style="background:#256B4E"></i><div><b>成功綠 #256B4E</b><span>必定配 ✓ 圖示 · 約 5.6:1</span></div></div>
+    </div>
+
+    <div class="token-card">
+      <h3>字級 · 字體</h3>
+      <div class="type-row"><span style="font-family:'DFKai-SB',serif;font-size:30px;color:#1F4D3A">一盅兩件</span><small>大標 56/1.2 · 明體</small></div>
+      <div class="type-row"><span style="font-size:24px;font-weight:700">開始遊戲</span><small>按鈕 30/1 · 黑體</small></div>
+      <div class="type-row"><span style="font-size:19px">點兩張卡，配成一對。</span><small>內文 26/1.6</small></div>
+      <div class="type-row"><span style="font-size:15px;color:#6E6357">輔助說明文字</span><small>輔助 22 起</small></div>
+      <p class="rule-list" style="margin-top:10px">正文最小 24px；行高 1.6；標題與內文同一黑體家族，只有大標用明體。</p>
+    </div>
+
+    <div class="token-card">
+      <h3>尺寸 · 點擊</h3>
+      <div class="measure"><div class="box" style="width:120px;height:64px">88 高</div><p>主按鈕高 88px，闊度 ≥ 300px。</p></div>
+      <div class="measure"><div class="box" style="width:66px;height:88px">3:4</div><p>卡牌 170×220；平板最小 150×200。</p></div>
+      <div class="measure"><div class="box" style="width:88px;height:40px">20 距</div><p>卡與卡之間 ≥ 20px，防誤觸。</p></div>
+      <p class="rule-list">單擊操作；無拖拽、長按、雙擊、懸停。任何一張卡整個卡面都可點。</p>
+    </div>
+
+    <div class="token-card">
+      <h3>節奏 · 回饋</h3>
+      <p class="rule-list">
+        翻牌 320ms；配對成功 600ms 光環＋蓋印；配對失敗停留 1.2 秒，不搖晃、不響警報。<br>
+        無倒數計時；每關 2–5 分鐘；連續玩 10 分鐘提示休息。<br>
+        錯誤零成本；同一對連續錯 2 次，茶博士自動出手。
+      </p>
+    </div>
+
+    <div class="token-card">
+      <h3>無障礙開關</h3>
+      <p class="rule-list">
+        大字（110%／125%）· 高對比 · 減少動態 · 語音旁白 · 音效音量 · 顯示計時<br>
+        所有設定即時生效並自動儲存；預設值本身已符合長者需要。
+      </p>
+    </div>
+
+    <div class="token-card">
+      <h3>設計原則</h3>
+      <p class="rule-list">
+        一屏一任務 · 位置不變 · 選項 ≤ 3 · 圖文雙編碼 · 錯誤不扣分 · 不用紅色說「錯」。<br>
+        不用深色背景、霓虹、玻璃擬態、泛黃濾鏡。
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  /* 畫面切換 */
+  const tabs = Array.from(document.querySelectorAll('.tab'));
+  const screens = {
+    home: document.getElementById('home'),
+    game: document.getElementById('game'),
+    result: document.getElementById('result')
+  };
+  function showScreen(name) {
+    tabs.forEach(function (t) { t.classList.toggle('active', t.dataset.screen === name); });
+    Object.keys(screens).forEach(function (k) { screens[k].classList.toggle('active', k === name); });
+  }
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      showScreen(tab.dataset.screen);
+    });
+  });
+  const initial = new URLSearchParams(location.search).get('screen');
+  if (initial && screens[initial]) {
+    showScreen(initial);
+  }
+
+  /* 卡牌示範 */
+  const DECK = [
+    { pair: '1', name: '蝦餃', icon: '🥟' },
+    { pair: '2', name: '燒賣', icon: '🍤' },
+    { pair: '4', name: '蛋撻', icon: '🥧' },
+    { pair: '1', name: '蝦餃', icon: '🥟' },
+    { pair: '3', name: '叉燒包', icon: '🥯' },
+    { pair: '2', name: '燒賣', icon: '🍤' },
+    { pair: '3', name: '叉燒包', icon: '🥯' },
+    { pair: '4', name: '蛋撻', icon: '🥧' }
+  ];
+
+  const board = document.getElementById('board');
+  DECK.forEach(function (card, i) {
+    const btn = document.createElement('button');
+    btn.className = 'card';
+    btn.type = 'button';
+    btn.dataset.pair = card.pair;
+    btn.setAttribute('aria-label', '卡牌 ' + (i + 1));
+    btn.innerHTML =
+      '<span class="card-inner">' +
+        '<span class="face back"><span class="kanji">茶</span></span>' +
+        '<span class="face front"><span class="icon">' + card.icon + '</span><span class="name">' + card.name + '</span></span>' +
+      '</span>';
+    btn.addEventListener('click', function () { onClick(btn); });
+    board.appendChild(btn);
+  });
+
+  let first = null;
+  let lock = false;
+  let matchedPairs = 0;
+
+  const stamps = Array.from(document.querySelectorAll('#ticket .stamp'));
+  function updateTicket(n) {
+    stamps.forEach(function (s, i) { s.classList.toggle('on', i < n); });
+  }
+
+  function onClick(card) {
+    if (lock || card === first || card.classList.contains('matched')) return;
+    card.classList.add('flipped');
+    if (!first) { first = card; return; }
+    lock = true;
+    const a = first, b = card;
+    if (a.dataset.pair === b.dataset.pair) {
+      setTimeout(function () {
+        a.classList.add('matched');
+        b.classList.add('matched');
+        matchedPairs += 1;
+        updateTicket(matchedPairs);
+        first = null;
+        lock = false;
+      }, 420);
+    } else {
+      setTimeout(function () {
+        a.classList.remove('flipped');
+        b.classList.remove('flipped');
+        first = null;
+        lock = false;
+      }, 1100);
+    }
+  }
+
+  /* 初始示範狀態：一對已配對、一張已翻開 */
+  const all = Array.from(document.querySelectorAll('.card'));
+  all[0].classList.add('flipped', 'matched');
+  all[3].classList.add('flipped', 'matched');
+  all[5].classList.add('flipped');
+  matchedPairs = 1;
+  updateTicket(1);
+
+  all.forEach(function (c) {
+    if (!c.classList.contains('flipped')) return;
+    const clone = c.cloneNode(true);
+    c.parentNode.replaceChild(clone, c);
+    clone.addEventListener('click', function () { onClick(clone); });
+  });
+</script>
+
+</body>
+</html>
+
+

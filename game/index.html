@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="一盅兩件 — 為長者而設的卡牌配對遊戲，離線可玩。">
+<title>一盅兩件 · 長者卡牌配對</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="stage">
+
+  <header class="topbar">
+    <button class="brand" id="brandBtn" type="button" aria-label="返回主頁" data-i18n-aria="backHomeAria" data-i18n="brand">一盅兩件</button>
+    <div class="top-center" id="topCenter"></div>
+    <div class="top-actions">
+      <div class="total-clock" id="totalClockWrap" hidden aria-label="總時間 00:00">
+        <span class="tc-icon" aria-hidden="true">⏱</span>
+        <span class="tc-label" data-i18n="totalTime">總時間</span>
+        <b id="totalClock">00:00</b>
+      </div>
+      <button class="round" id="settingsBtn" type="button" aria-label="設定" data-i18n-aria="settingsAria">⚙️</button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ 首頁 ============ -->
+    <section class="screen active" id="screen-home">
+      <div class="home">
+        <div class="hero">
+          <div class="basket" aria-hidden="true">🥟</div>
+          <h1 data-i18n="brand">一盅兩件</h1>
+          <p class="tagline" data-i18n="tagline">慢慢嘆 · 齊齊玩</p>
+        </div>
+
+        <div class="themes" id="themeRow" role="group" aria-label="選擇主題" data-i18n-aria="chooseThemeAria"></div>
+
+        <div class="mode-row" role="group" aria-label="遊玩模式" data-i18n-aria="modeAria">
+          <button class="mode active" type="button" data-mode="solo" aria-pressed="true" data-i18n="solo">一個人玩</button>
+          <button class="mode" type="button" data-mode="duo" aria-pressed="false" data-i18n="duo">搭枱 · 兩個人</button>
+        </div>
+
+        <button class="primary" id="startBtn" type="button" data-i18n="start">開始遊戲</button>
+
+        <div class="sub-actions">
+          <button class="ghost" id="howBtn" type="button" data-i18n="how">點樣玩？</button>
+          <span class="dot" aria-hidden="true"></span>
+          <button class="ghost" id="albumBtn" type="button" data-i18n="album">相簿</button>
+          <span class="dot" id="continueDot" aria-hidden="true"></span>
+          <button class="ghost" id="continueBtn" type="button" hidden data-i18n="continue">繼續上次</button>
+        </div>
+
+        <p class="home-foot" id="homeFoot">第 1 關 · 3 對卡 · 約 2 分鐘</p>
+      </div>
+
+      <div class="lang-switch" id="langSwitch" role="group" aria-label="語言" data-i18n-aria="langAria">
+        <button type="button" data-lang="zh-Hant" data-i18n="langTC">繁</button>
+        <button type="button" data-lang="zh-Hans" data-i18n="langSC">简</button>
+        <button type="button" data-lang="en" data-i18n="langEN">EN</button>
+      </div>
+    </section>
+
+    <!-- ============ 遊戲 ============ -->
+    <section class="screen" id="screen-game">
+      <div class="game">
+        <div class="board" id="board" aria-label="卡牌配對區" data-i18n-aria="boardAria" tabindex="-1"></div>
+
+        <div class="coach" id="coach">
+          <span class="coach-avatar" aria-hidden="true">🧑‍🍳</span>
+          <p id="coachText"><b>茶博士：</b>慢慢嚟，先睇下邊兩張有關係。</p>
+        </div>
+
+        <div class="actionbar">
+          <button id="hintBtn" type="button">💡 <span data-i18n="hintBtn">提示</span></button>
+          <button id="pauseBtn" type="button">⏸ <span data-i18n="pauseBtn">暫停</span></button>
+          <button id="soundBtn" type="button">🔊 <span data-i18n="soundOn">聲音</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 完成 ============ -->
+    <section class="screen" id="screen-result">
+      <div class="result">
+        <p class="kicker" id="resKicker">第 1 關完成</p>
+        <h2 class="result-title" id="resTitle">點心紙滿咗！</h2>
+
+        <div class="paper">
+          <div class="paper-head" id="paperHead">點心紙 · 第 1 關</div>
+          <div class="paper-grid" id="paperGrid"></div>
+          <div class="paper-foot" id="paperFoot">3 / 3 蓋印</div>
+        </div>
+
+        <div class="stars" id="stars" aria-label="三星">★★★</div>
+
+        <div class="stats">
+          <div class="stat"><span data-i18n="statTime">完成時間</span><b id="statTime">2:10</b></div>
+          <div class="stat"><span data-i18n="statPairs">配對</span><b id="statPairs">3 / 3</b></div>
+          <div class="stat"><span data-i18n="statHints">提示</span><b id="statHints">0 次</b></div>
+        </div>
+
+        <p class="total-line"><span data-i18n="totalTime">總時間</span> <b id="resultTotal">00:00</b></p>
+
+        <blockquote class="memory" id="memoryQuote">「以前點心車推到枱邊，蒸籠一開，成枱都係煙。」</blockquote>
+
+        <button class="primary" id="nextBtn" type="button" data-i18n="next">下一關</button>
+        <div class="sub-actions">
+          <button class="ghost" id="replayBtn" type="button" data-i18n="replay">再玩一次</button>
+          <span class="dot" aria-hidden="true"></span>
+          <button class="ghost" id="homeBtn2" type="button" data-i18n="home">返首頁</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 相簿 ============ -->
+    <section class="screen" id="screen-album">
+      <div class="album">
+        <h2 class="album-title" data-i18n="albumTitle">回憶相簿</h2>
+        <p class="album-sub" id="albumSub">已收集 0 張</p>
+        <div class="album-grid" id="albumGrid"></div>
+        <button class="primary" id="albumBack" type="button" data-i18n="home">返首頁</button>
+      </div>
+    </section>
+
+    <!-- ============ 全部完成 ============ -->
+    <section class="screen" id="screen-final">
+      <div class="final">
+        <div class="basket small" aria-hidden="true">🏮</div>
+        <h2 class="result-title" data-i18n="finalTitle">五關完成</h2>
+        <p class="final-text"><span data-i18n="finalTextPrefix">你集齊咗</span> <b id="finalCount">0</b> <span data-i18n="finalTextSuffix">張回憶卡。</span></p>
+        <p class="final-time"><span data-i18n="totalTime">總時間</span> <b id="finalTimeValue">00:00</b></p>
+        <div class="stars" id="finalStars" aria-label="總星數">★★★</div>
+        <button class="primary" id="finalAlbum" type="button" data-i18n="finalAlbum">睇相簿</button>
+        <div class="sub-actions">
+          <button class="ghost" id="finalAgain" type="button" data-i18n="replay">再玩一次</button>
+          <span class="dot" aria-hidden="true"></span>
+          <button class="ghost" id="finalHome" type="button" data-i18n="home">返首頁</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============ 設定 ============ -->
+<div class="modal" id="modal-settings" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <h2 id="settingsTitle" data-i18n="settingsTitle">設定</h2>
+    <div class="setting">
+      <span data-i18n="fontSize">字級</span>
+      <div class="seg" id="setScale">
+        <button type="button" data-v="1" data-i18n="standard">標準</button>
+        <button type="button" data-v="1.1" data-i18n="large">大</button>
+        <button type="button" data-v="1.25" data-i18n="xlarge">特大</button>
+      </div>
+    </div>
+    <div class="setting">
+      <span data-i18n="contrast">高對比</span>
+      <button class="switch" type="button" id="setContrast" aria-pressed="false">關</button>
+    </div>
+    <div class="setting">
+      <span data-i18n="reduceMotion">減少動態</span>
+      <button class="switch" type="button" id="setReduce" aria-pressed="false">關</button>
+    </div>
+    <div class="setting">
+      <span data-i18n="voice">語音旁白</span>
+      <button class="switch" type="button" id="setVoice" aria-pressed="true">開</button>
+    </div>
+    <div class="setting">
+      <span data-i18n="sound">音效</span>
+      <button class="switch" type="button" id="setSound" aria-pressed="true">開</button>
+    </div>
+    <div class="setting">
+      <span data-i18n="showTimer">顯示計時</span>
+      <button class="switch" type="button" id="setTimer" aria-pressed="false">關</button>
+    </div>
+    <div class="setting">
+      <span data-i18n="volume">音量</span>
+      <input type="range" id="setVolume" min="0" max="100" step="10" value="60" aria-label="音量" data-i18n-aria="volume">
+    </div>
+    <button class="primary small" id="settingsClose" type="button" data-autofocus data-i18n="settingsDone">完成</button>
+  </div>
+</div>
+
+<!-- ============ 教學 ============ -->
+<div class="modal" id="modal-tutorial" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="tutTitle">
+    <h2 id="tutTitle" data-i18n="tutTitle">點樣玩？</h2>
+    <div class="tut-step" data-step="1">
+      <div class="tut-icon" aria-hidden="true">👆</div>
+      <h3 data-i18n="tut1Title">點兩張卡</h3>
+      <p data-i18n="tut1Text">每次翻開兩張，配成一對。</p>
+    </div>
+    <div class="tut-step" data-step="2" hidden>
+      <div class="tut-icon" aria-hidden="true">🔴</div>
+      <h3 data-i18n="tut2Title">點心紙蓋印</h3>
+      <p data-i18n="tut2Text">配對成功，點心紙會蓋一個印，仲會送你一句回憶。</p>
+    </div>
+    <div class="tut-step" data-step="3" hidden>
+      <div class="tut-icon" aria-hidden="true">💡</div>
+      <h3 data-i18n="tut3Title">唔識就撳提示</h3>
+      <p data-i18n="tut3Text">茶博士會幫你望下，唔扣分、唔會輸。</p>
+    </div>
+    <div class="tut-nav">
+      <button class="ghost" id="tutPrev" type="button" data-i18n="tutPrev">上一步</button>
+      <span class="tut-dots" id="tutDots" aria-hidden="true">● ○ ○</span>
+      <button class="primary small" id="tutNext" type="button" data-i18n="tutNext">下一步</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 開始前快速設定 ============ -->
+<div class="modal" id="modal-quick" hidden>
+  <div class="modal-card quick-card" role="dialog" aria-modal="true" aria-labelledby="quickTitle">
+    <p class="quick-kicker" data-i18n="quickKicker">開始之前</p>
+    <h2 id="quickTitle" data-i18n="quickTitle">揀個睇得舒服嘅字大細</h2>
+    <p class="quick-sub" data-i18n="quickSub">設定會記住，之後可喺右上角再改。</p>
+
+    <div class="quick-label" data-i18n="quickFontLabel">字大細</div>
+    <div class="font-options" id="fontOptions" role="group" aria-label="字級" data-i18n-aria="quickFontLabel">
+      <button type="button" class="font-opt" data-scale="1" aria-pressed="true">
+        <span class="fo-a" style="font-size:1.25rem">A</span>
+        <span class="fo-name" data-i18n="standard">標準</span>
+      </button>
+      <button type="button" class="font-opt" data-scale="1.1" aria-pressed="false">
+        <span class="fo-a" style="font-size:1.65rem">A</span>
+        <span class="fo-name" data-i18n="large">大</span>
+      </button>
+      <button type="button" class="font-opt" data-scale="1.25" aria-pressed="false">
+        <span class="fo-a" style="font-size:2.1rem">A</span>
+        <span class="fo-name" data-i18n="xlarge">特大</span>
+      </button>
+    </div>
+
+    <div class="quick-row">
+      <div class="quick-row-text">
+        <span data-i18n="quickContrast">高對比</span>
+        <small data-i18n="quickContrastDesc">黑白分明，睇得更清楚</small>
+      </div>
+      <button class="switch big" type="button" id="quickContrast" aria-pressed="false">關</button>
+    </div>
+
+    <button class="primary" id="quickStart" type="button" data-autofocus data-i18n="quickStart">開始玩</button>
+    <button class="ghost quick-back" id="quickBack" type="button" data-i18n="quickBack">返首頁</button>
+  </div>
+</div>
+
+<!-- ============ 暫停 ============ -->
+<div class="modal" id="modal-pause" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="pauseTitle">
+    <h2 id="pauseTitle" data-i18n="pauseTitle">唞一唞</h2>
+    <p class="pause-text" data-i18n="pauseText">慢慢嚟，唔急。</p>
+    <button class="primary small" id="pauseResume" type="button" data-i18n="pauseResume">繼續玩</button>
+    <button class="secondary" id="pauseRestart" type="button" data-i18n="pauseRestart">重玩本關</button>
+    <button class="secondary" id="pauseHome" type="button" data-i18n="pauseHome">返首頁</button>
+  </div>
+</div>
+
+<p class="sr-only" id="live" aria-live="polite"></p>
+
+<script src="js/data.js"></script>
+<script src="js/art.js"></script>
+<script src="js/art-available.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/i18n-hans.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

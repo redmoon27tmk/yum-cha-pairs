@@ -1,0 +1,11 @@
+# 作品壓縮檔（用 GitHub Releases 發佈，不放入 repo）
+*.zip
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python cache
+__pycache__/
+*.pyc
