@@ -1,4 +1,4 @@
-﻿# 遊戲測試報告
+# 遊戲測試報告
 
 **日期**：2026-11-10  
 **環境**：Windows、Microsoft Edge（headless Chromium）、1024×768、`file://` 直接開啟、無伺服器  
